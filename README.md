@@ -1,4 +1,5 @@
 
+This plugin is work in progress and trying to use it with SQL Server database.
 Discovery (QGIS plugin)
 =======================
 
