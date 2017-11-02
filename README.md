@@ -7,7 +7,7 @@ Discovery (QGIS plugin)
 
 The Discovery plugin adds search capability to QGIS. Its key features are:
 
-- Connects directly to PostgreSQL / PostGIS (no reliance on web services)
+- Connects directly to SQL Server table (no reliance on web services)
 - Auto-completion of results
 - Flexible expression-based support for scales
 - Can use multiple fields to display result context
