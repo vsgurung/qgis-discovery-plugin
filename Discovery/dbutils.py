@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+## -*- coding: utf-8 -*-
 
 # Discovery Plugin
 #
@@ -12,15 +12,16 @@
 
 from PyQt4.QtCore import *
 
-import psycopg2
+# import psycopg2
+import pyodbc
 
 
 def get_connection(conn_info):
     """ Connect to the database using conn_info dict:
      { 'host': ..., 'port': ..., 'database': ..., 'username': ..., 'password': ... }
     """
-    conn = psycopg2.connect(**conn_info)
-    conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+    conn = pyodbc.connect(**conn_info)
+    #conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
     return conn
 
 
@@ -28,7 +29,7 @@ def get_postgres_connections():
     """ Read PostgreSQL connection names from QSettings stored by QGIS
     """
     settings = QSettings()
-    settings.beginGroup(u"/PostgreSQL/connections/")
+    settings.beginGroup(u"/MSSQL/connections/")
     return settings.childGroups()
 
 
@@ -43,7 +44,7 @@ def get_postgres_conn_info(selected):
     """ Read PostgreSQL connection details from QSettings stored by QGIS
     """
     settings = QSettings()
-    settings.beginGroup(u"/PostgreSQL/connections/" + selected)
+    settings.beginGroup(u"/MSSQL/connections/" + selected)
     if not settings.contains("database"): # non-existent entry?
         return {}
 
@@ -125,8 +126,8 @@ def get_search_sql(search_text, geom_column, search_column, echo_search_column, 
     query_dict = {'search_text': wildcarded_search_string}
 
     query_text = """ SELECT
-                        ST_AsText("%s") AS geom,
-                        ST_SRID("%s") AS epsg,
+                        STAsText("%s") AS geom,
+                        STSRID("%s") AS epsg,
                  """ % (geom_column, geom_column)
     if echo_search_column:
         query_column_selection_text = """"%s"
