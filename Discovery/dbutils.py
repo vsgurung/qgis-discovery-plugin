@@ -40,6 +40,7 @@ def current_postgres_connection():
     return settings.value("connection", "", type=str)
 """
 
+# Work on this function
 def get_sqlserver_conn_info(selected):
     """ Read SQL Server connection details from QSettings stored by QGIS
     """
@@ -50,7 +51,7 @@ def get_sqlserver_conn_info(selected):
 
     conn_info = {}
     conn_info["host"] = settings.value("host", "", type=str)
-    conn_info["port"] = settings.value("port", 432, type=int)
+    conn_info["port"] = settings.value("port", 1433, type=int)
     conn_info["database"] = settings.value("database", "", type=str)
     username = settings.value("username", "", type=str)
     password = settings.value("password", "", type=str)
@@ -68,7 +69,7 @@ def _quote_str(txt):
     """ make the string safe - replace ' with '' """
     return txt.replace("'", "''")
 
-# Work on this function
+
 def list_schemas(cursor):
     """ Get list of schema names
     """
