@@ -25,8 +25,8 @@ def get_connection(conn_info):
     return conn
 
 
-def get_postgres_connections():
-    """ Read PostgreSQL connection names from QSettings stored by QGIS
+def get_sqlserver_connections():
+    """ Read SQL Server connection names from QSettings stored by QGIS
     """
     settings = QSettings()
     settings.beginGroup(u"/MSSQL/connections/")
@@ -40,8 +40,8 @@ def current_postgres_connection():
     return settings.value("connection", "", type=str)
 """
 
-def get_postgres_conn_info(selected):
-    """ Read PostgreSQL connection details from QSettings stored by QGIS
+def get_sqlserver_conn_info(selected):
+    """ Read SQL Server connection details from QSettings stored by QGIS
     """
     settings = QSettings()
     settings.beginGroup(u"/MSSQL/connections/" + selected)
@@ -68,7 +68,7 @@ def _quote_str(txt):
     """ make the string safe - replace ' with '' """
     return txt.replace("'", "''")
 
-
+# Work on this function
 def list_schemas(cursor):
     """ Get list of schema names
     """
