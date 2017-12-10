@@ -70,35 +70,30 @@ def _quote_str(txt):
     return txt.replace("'", "''")
 
 
-def list_schemas(cursor):
+def list_schemas(in_cursor):
     """ Get list of schema names
+   
     """
-    sql = "SELECT nspname FROM pg_namespace WHERE nspname !~ '^pg_' AND nspname != 'information_schema'"
-    cursor.execute(sql)
+    schemas = list(set([r[1] for r in in_cursor.tables().fetchall()])
+    if schemas:
+        return sorted(schemas)
 
-    names = map(lambda row: row[0], cursor.fetchall())
-    return sorted(names)
-
-def list_tables(cursor, schema):
-    sql = """SELECT pg_class.relname
-                FROM pg_class
-                JOIN pg_namespace ON pg_namespace.oid = pg_class.relnamespace
-                WHERE pg_class.relkind IN ('v', 'r') AND nspname = '%s'
-                ORDER BY nspname, relname""" % _quote_str(schema)
-    cursor.execute(sql)
-    names = map(lambda row: row[0], cursor.fetchall())
-    return sorted(names)
-
-def list_columns(cursor, schema, table):
-    sql = """SELECT a.attname AS column_name
-        FROM pg_class c
-        JOIN pg_attribute a ON a.attrelid = c.oid
-        JOIN pg_namespace nsp ON c.relnamespace = nsp.oid
-        WHERE c.relname = '%s' AND nspname='%s' AND a.attnum > 0
-        ORDER BY a.attnum""" % (_quote_str(table), _quote_str(schema))
-    cursor.execute(sql)
-    names = map(lambda row: row[0], cursor.fetchall())
-    return sorted(names)
+                   
+def list_tables(in_cursor, in_schema,in_tabletype='TABLE'):
+    """
+    Returns list of all tables(spatial and non spatial)
+    """
+    tables = [t.table_name for t in in_cur.tables(schema=in_schema, tableType=in_tableType).fetchall()]
+	if tables is not None:
+		return sorted(tables)
+    
+                   
+def list_columns(in_cursor, in_schema, in_table):
+    """
+    Returns list of columns of a particular table.
+    """
+    columns = [c.column_name for c in in_cursor.columns(table=in_table,schema=in_schema).fetchall()]
+    return sorted(columns)
 
 
 def get_search_sql(search_text, geom_column, search_column, echo_search_column, display_columns, extra_expr_columns, schema, table):
