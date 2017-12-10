@@ -74,7 +74,7 @@ def list_schemas(in_cursor):
     """ Get list of schema names
    
     """
-    schemas = list(set([r[1] for r in in_cursor.tables().fetchall()])
+    schemas = list(set([r.table_schem for r in in_cursor.tables().fetchall()])
     if schemas:
         return sorted(schemas)
 
