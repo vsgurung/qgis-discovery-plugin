@@ -72,10 +72,9 @@ def _quote_str(txt):
 
 def list_schemas(in_cursor):
     """ Get list of schema names
-    	Only pulling out dbo schema
-   
+    	   
     """
-    schemas = list(set([r.table_schem for r in in_cursor.tables().fetchall() if r.table_schem=='dbo'])
+    schemas = list(set([r.table_schem for r in in_cursor.tables().fetchall()])
     if schemas:
         return sorted(schemas)
 
