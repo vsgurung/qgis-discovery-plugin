@@ -26,7 +26,7 @@ def get_connection(conn_info):
 
 
 def get_sqlserver_connections():
-    """ Read SQL Server connection names from QSettings stored by QGIS
+    """ Read SQL Server connection names from QSettings stored by QGIS and returns list of database connections
     """
     settings = QSettings()
     settings.beginGroup(u"/MSSQL/connections/")
