@@ -18,7 +18,8 @@ import pyodbc
 
 def get_connection(conn_info):
     """ Connect to the database using conn_info dict:
-     { 'host': ..., 'port': ..., 'database': ..., 'username': ..., 'password': ... }
+     { 'host': ...,'database': ..., 'username': ..., 'password': ... }
+     MSSQL does not have port option hence deleted
     """
     conn = pyodbc.connect(**conn_info)
     #conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
@@ -40,7 +41,7 @@ def current_postgres_connection():
     return settings.value("connection", "", type=str)
 """
 
-# Work on this function
+
 def get_sqlserver_conn_info(selected):
     """ Read SQL Server connection details from QSettings stored by QGIS
     """
@@ -49,13 +50,13 @@ def get_sqlserver_conn_info(selected):
     if not settings.contains("database"): # non-existent entry?
         return {}
 
+
     conn_info = {}
     conn_info["host"] = settings.value("host", "", type=str)
-    conn_info["port"] = settings.value("port", 1433, type=int)
     conn_info["database"] = settings.value("database", "", type=str)
     username = settings.value("username", "", type=str)
     password = settings.value("password", "", type=str)
-    if len(username) != 0:
+    if username:
         conn_info["user"] = username
         conn_info["password"] = password
     return conn_info
@@ -95,7 +96,7 @@ def list_columns(in_cursor, in_schema, in_table):
     columns = [c.column_name for c in in_cursor.columns(table=in_table,schema=in_schema).fetchall()]
     return sorted(columns)
 
-
+# Work on this function now.
 def get_search_sql(search_text, geom_column, search_column, echo_search_column, display_columns, extra_expr_columns, schema, table):
     """ Returns a tuple: (SQL query text, dictionary with values to replace variables with).
     """
